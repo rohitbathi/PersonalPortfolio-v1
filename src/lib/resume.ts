@@ -7,7 +7,7 @@ export interface ResumeInfo {
 }
 
 const RESUME_CONFIG = {
-  directUrl: "https://drive.google.com/uc?export=download&id=16pajWO-QZlmp8CHkFH_c9ce-FbM27hQN",
+  directUrl: "https://drive.google.com/uc?export=download&id=1B-y4ga_SpzBKAupjSPuaYSHhiFj2sr4L",
   fallbackUrl: "/resume/RohitBathi_Resume.pdf"
 };
 
