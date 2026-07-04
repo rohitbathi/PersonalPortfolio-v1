@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import {
   Github,
@@ -8,7 +9,6 @@ import {
   ArrowUpRight,
   MapPin,
   Zap,
-  Twitter,
 } from "lucide-react";
 import { NavPill } from "@/components/NavPill";
 import { GlowCard } from "@/components/GlowCard";
@@ -42,12 +42,12 @@ function KeyCap({
       rel={external ? "noreferrer" : undefined}
       aria-label={label}
       className={`key-cap key-cap-hover group flex h-16 items-center justify-center gap-2 text-muted-foreground hover:text-foreground ${
-        wide ? "px-5" : "w-16"
+        wide ? "px-5" : "w-20"
       }`}
     >
-      {Icon && <Icon className="h-5 w-5 transition-transform group-hover:scale-90" />}
+      {Icon && <Icon className="h-6 w-6 transition-transform group-hover:scale-90" strokeWidth={1.5} />}
       {wide && (
-        <span className="font-mono text-[11px] uppercase tracking-widest">{label}</span>
+        <span className="font-mono text-[13px] uppercase tracking-widest">{label}</span>
       )}
     </a>
   );
@@ -60,13 +60,13 @@ function Hero() {
       className="relative min-h-screen w-full overflow-hidden bg-hero-glow"
     >
       <div className="mx-auto flex min-h-screen max-w-5xl flex-col justify-center px-6 pt-32 pb-16">
-        <div className="mb-8 inline-flex w-fit items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1.5 backdrop-blur-xl">
+        {/* <div className="mb-8 inline-flex w-fit items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1.5 backdrop-blur-xl">
           <span className="relative flex h-2 w-2">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-60" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-success" />
           </span>
           <span className="text-xs font-medium text-foreground">Available for projects</span>
-        </div>
+        </div> */}
 
         <h1 className="text-5xl font-bold leading-[1.05] tracking-tight text-foreground sm:text-6xl md:text-7xl">
           Hi, I'm Rohit.
@@ -76,13 +76,13 @@ function Hero() {
 
         <p className="mt-8 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
           I build and scale production AI systems — agentic workflows, voice AI with
-          sub-500ms latency, and RAG architectures used by thousands.
+          sub-500ms speech-to-speech, and RAG architectures used by thousands.
         </p>
 
-        <div className="mt-12 flex flex-wrap items-center gap-3">
+        <div className="mt-12 flex flex-wrap items-center gap-1.5">
           <KeyCap href="https://github.com/rohitbathi" icon={Github} label="Github" external />
           <KeyCap href="https://linkedin.com/in/rohitbathi" icon={Linkedin} label="LinkedIn" external />
-          <KeyCap href="/resume.pdf" icon={FileText} label="Resume" external />
+          <KeyCap href="/rohitbathi_resume.pdf" icon={FileText} label="Resume" external />
           <KeyCap href="mailto:bathirohit@gmail.com" icon={Mail} label="Email" />
           <KeyCap href="#bento" label="Explore more" wide />
         </div>
@@ -131,38 +131,40 @@ function Bento() {
         </GlowCard>
 
         {/* Location */}
-        <GlowCard className="bento-card sm:col-span-2 p-5">
-          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-border bg-secondary/40 px-3 py-1 text-xs text-foreground">
-            <MapPin className="h-3.5 w-3.5" />
-            Location
+        <GlowCard className="bento-card sm:col-span-2 sm:row-span-2 p-5 flex flex-col justify-between">
+          <div>
+            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-border bg-secondary/40 px-3 py-1 text-xs text-foreground">
+              <MapPin className="h-3.5 w-3.5" />
+              Location
+            </div>
+            <div className="text-lg font-semibold text-foreground">San Francisco</div>
+            <div className="text-sm text-muted-foreground">California, USA</div>
+            <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
+              Working remotely with teams building AI-native products.
+            </p>
           </div>
-          <div className="text-lg font-semibold text-foreground">San Francisco</div>
-          <div className="text-sm text-muted-foreground">California, USA</div>
-          <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
-            Working remotely with teams building AI-native products.
-          </p>
-        </GlowCard>
-
-        {/* Socials keycaps */}
-        <GlowCard className="bento-card sm:col-span-2 p-5">
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-secondary/40 px-3 py-1 text-xs text-foreground">
-            Socials
+          <div className="relative mt-6 flex h-32 items-center justify-center rounded-xl border border-border/40 bg-secondary/10 overflow-hidden">
+            {/* Subtle grid map background */}
+            <div className="absolute inset-0 opacity-[0.15] bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:14px_24px]" />
+            <div className="relative flex h-8 w-8 items-center justify-center">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-30" />
+              <span className="absolute inline-flex h-6 w-6 animate-ping rounded-full bg-success opacity-50" />
+              <span className="relative inline-flex h-3 w-3 rounded-full bg-success shadow-[0_0_10px_var(--success)]" />
+            </div>
+            <div className="absolute bottom-2 right-3 font-mono text-[9px] uppercase tracking-widest text-muted-foreground/60">
+              37.7749° N, 122.4194° W
+            </div>
           </div>
-          <div className="flex gap-2">
-            <KeyCap href="https://x.com/" icon={Twitter} label="X" external />
-            <KeyCap href="https://linkedin.com/in/rohitbathi" icon={Linkedin} label="LinkedIn" external />
-            <KeyCap href="https://github.com/rohitbathi" icon={Github} label="Github" external />
-          </div>
-        </GlowCard>
-
-        {/* Github contributions */}
-        <GlowCard className="bento-card sm:col-span-3 p-5">
-          <GithubContributions username="rohitbathi" />
         </GlowCard>
 
         {/* Tech stack */}
         <GlowCard className="bento-card sm:col-span-3 p-5">
           <TechStack />
+        </GlowCard>
+
+        {/* Github contributions */}
+        <GlowCard className="bento-card sm:col-span-3 p-5">
+          <GithubContributions username="rohitbathi" />
         </GlowCard>
       </div>
     </section>
@@ -244,18 +246,59 @@ function Projects() {
 }
 
 function ExperienceSection() {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Disable scroll progress logic on mobile/tablet (screens < 1024px)
+      if (window.innerWidth < 1024) {
+        setScrollProgress(1); // Keep all cards open on mobile
+        return;
+      }
+
+      const container = containerRef.current;
+      if (!container) return;
+
+      const rect = container.getBoundingClientRect();
+      const viewHeight = window.innerHeight;
+      
+      // Pinning starts when parent rect.top reaches 96px (top-24)
+      const startOffset = 96;
+      const totalScrollableHeight = rect.height - (viewHeight - startOffset);
+      if (totalScrollableHeight <= 0) return;
+
+      const scrolled = startOffset - rect.top;
+      const progress = Math.max(0, Math.min(1, scrolled / totalScrollableHeight));
+      setScrollProgress(progress);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll);
+    handleScroll();
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
+  }, []);
+
   return (
-    <section id="timeline" className="mx-auto max-w-6xl px-6 py-24">
-      <SectionHeading
-        label="Experience"
-        title={
-          <>
-            Work &amp; <span className="text-muted-foreground">education.</span>
-          </>
-        }
-        description="A Founding AI Engineer who's shipped 10+ enterprise-grade agents, taken a platform 0→1,000+ users, and obsesses over the details between demo and production."
-      />
-      <Timeline />
+    <section ref={containerRef} id="timeline" className="relative lg:h-[220vh] w-full">
+      <div className="lg:sticky lg:top-24 mx-auto max-w-6xl px-6 py-24 lg:py-8 lg:h-[calc(100vh-8rem)] flex flex-col justify-start lg:overflow-hidden">
+        <SectionHeading
+          label="Experience"
+          title={
+            <>
+              Work &amp; <span className="text-muted-foreground">education.</span>
+            </>
+          }
+          description="A Founding AI Engineer who's shipped 10+ enterprise-grade agents, taken a platform 0→1,000+ users, and obsesses over the details between demo and production."
+        />
+        <div className="flex-1 w-full mt-4 lg:overflow-hidden">
+          <Timeline scrollProgress={scrollProgress} />
+        </div>
+      </div>
     </section>
   );
 }
@@ -278,13 +321,13 @@ function Contact() {
             Have an AI product idea or an agentic workflow that needs to reach
             production? I'd love to hear about it.
           </p>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-1.5">
             <a
               href="mailto:bathirohit@gmail.com"
-              className="key-cap key-cap-hover inline-flex h-14 items-center gap-2 px-5 text-foreground"
+              className="key-cap key-cap-hover inline-flex h-14 items-center gap-2 px-5 text-muted-foreground hover:text-foreground"
             >
-              <Mail className="h-4 w-4" />
-              <span className="font-mono text-[11px] uppercase tracking-widest">
+              <Mail className="h-5 w-5" strokeWidth={1.5} />
+              <span className="font-mono text-[13px] uppercase tracking-widest">
                 bathirohit@gmail.com
               </span>
             </a>
@@ -292,16 +335,16 @@ function Contact() {
               href="tel:+19414002951"
               className="key-cap key-cap-hover inline-flex h-14 items-center gap-2 px-5 text-muted-foreground hover:text-foreground"
             >
-              <span className="font-mono text-[11px] uppercase tracking-widest">
+              <span className="font-mono text-[13px] uppercase tracking-widest">
                 (941) 400-2951
               </span>
             </a>
           </div>
         </div>
       </GlowCard>
-      <footer className="mt-12 flex items-center justify-center text-xs text-muted-foreground">
+      {/* <footer className="mt-12 flex items-center justify-center text-xs text-muted-foreground">
         <div>© {new Date().getFullYear()} Rohit Bathi. All rights reserved.</div>
-      </footer>
+      </footer> */}
     </section>
   );
 }

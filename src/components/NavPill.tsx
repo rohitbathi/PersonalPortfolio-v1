@@ -13,7 +13,7 @@ export function NavPill() {
   const [active, setActive] = useState("intro");
   const containerRef = useRef<HTMLDivElement | null>(null);
   const btnRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
-  const [dot, setDot] = useState({ left: 0, opacity: 0 });
+  const [activeLine, setActiveLine] = useState({ left: 0, opacity: 0 });
 
   useEffect(() => {
     const sections = items
@@ -51,7 +51,8 @@ export function NavPill() {
     if (!btn || !container) return;
     const cRect = container.getBoundingClientRect();
     const bRect = btn.getBoundingClientRect();
-    setDot({ left: bRect.left - cRect.left + bRect.width / 2 - 3, opacity: 1 });
+    // Center a 16px wide line (w-4) under the active button
+    setActiveLine({ left: bRect.left - cRect.left + bRect.width / 2 - 8, opacity: 1 });
   }, [active]);
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
@@ -88,11 +89,11 @@ export function NavPill() {
         })}
         <span
           aria-hidden
-          className="pointer-events-none absolute -bottom-0.5 h-1.5 w-1.5 rounded-full bg-success shadow-[0_0_10px_var(--success)]"
+          className="pointer-events-none absolute bottom-[6px] h-[3px] w-4 rounded-full bg-success shadow-[0_0_8px_var(--success)]"
           style={{
             left: 0,
-            transform: `translateX(${dot.left}px)`,
-            opacity: dot.opacity,
+            transform: `translateX(${activeLine.left}px)`,
+            opacity: activeLine.opacity,
             transition:
               "transform 500ms cubic-bezier(0.34, 1.3, 0.64, 1), opacity 300ms ease",
           }}

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Github } from "lucide-react";
 
 interface Contribution {
@@ -23,6 +23,7 @@ const LEVEL_COLORS = [
 export function GithubContributions({ username = "rohitbathi" }: { username?: string }) {
   const [data, setData] = useState<ApiResponse | null>(null);
   const [error, setError] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetch(`https://github-contributions-api.jogruber.de/v4/${username}?y=last`)
@@ -30,6 +31,12 @@ export function GithubContributions({ username = "rohitbathi" }: { username?: st
       .then((json: ApiResponse) => setData(json))
       .catch(() => setError(true));
   }, [username]);
+
+  useEffect(() => {
+    if (data && scrollRef.current) {
+      scrollRef.current.scrollLeft = scrollRef.current.scrollWidth;
+    }
+  }, [data]);
 
   const contribs = data?.contributions ?? [];
   const total = contribs.reduce((s, c) => s + c.count, 0);
@@ -81,8 +88,8 @@ export function GithubContributions({ username = "rohitbathi" }: { username?: st
         </span>
       </div>
 
-      <div className="flex-1 overflow-hidden">
-        <div className="flex gap-[3px]">
+      <div className="flex-1 overflow-x-auto pb-1" ref={scrollRef}>
+        <div className="flex gap-[3px] min-w-max">
           {weeks.map((week, i) => (
             <div key={i} className="flex flex-col gap-[3px]">
               {week.map((day, j) =>

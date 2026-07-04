@@ -143,35 +143,58 @@
     color-mix(in oklab, var(--card) 92%, white 8%) 0%,
     var(--card) 45%,
     color-mix(in oklab, var(--card) 70%, black 30%) 100%);
-  border: 1px solid var(--border);
-  border-top-color: color-mix(in oklab, white 12%, var(--border));
+  border: 2px solid var(--border);
   border-bottom-color: color-mix(in oklab, black 50%, var(--border));
   border-radius: 0.85rem;
+  
+  /* 2D skew transformation to give keycaps a slanted look */
+  transform: skewX(-12deg);
+  
+  /* Thick solid grey shadow underneath the key */
   box-shadow:
-    inset 0 1px 0 0 color-mix(in oklab, white 10%, transparent),
     inset 0 -3px 0 0 color-mix(in oklab, black 55%, transparent),
-    0 2px 0 0 color-mix(in oklab, black 60%, transparent),
-    0 4px 8px 0 color-mix(in oklab, black 40%, transparent);
-  transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.15s ease, color 0.15s ease;
+    8px 8px 0 0 #4b5563,
+    8px 10px 16px 0 rgba(0, 0, 0, 0.4);
+    
+  transition: transform 0.1s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.1s ease, border-color 0.15s ease, color 0.15s ease;
 }
 
 @utility key-cap-hover {
-  &:hover {
-    border-color: color-mix(in oklab, var(--glow-a) 30%, var(--border));
-  }
-
   &:hover,
   &:focus-visible {
-    transform: translateY(3px);
+    /* Translate down and to the right, keeping the skew active */
+    transform: translate(4px, 4px) skewX(-12deg);
+    
+    /* Shrink the shadow to simulate key depression */
     box-shadow:
-      inset 0 2px 4px 0 color-mix(in oklab, black 60%, transparent),
-      inset 0 -1px 0 0 color-mix(in oklab, white 5%, transparent),
-      0 0 0 0 color-mix(in oklab, black 60%, transparent),
-      0 1px 2px 0 color-mix(in oklab, black 40%, transparent);
+      inset 0 -2px 0 0 color-mix(in oklab, black 55%, transparent),
+      4px 4px 0 0 #4b5563,
+      4px 5px 8px 0 rgba(0, 0, 0, 0.4);
   }
 
   &:active {
-    transform: translateY(4px);
+    /* Fully depress the keycap */
+    transform: translate(8px, 8px) skewX(-12deg);
+    box-shadow:
+      inset 0 -1px 0 0 color-mix(in oklab, black 55%, transparent),
+      0 0 0 0 #4b5563,
+      0 1px 2px 0 rgba(0, 0, 0, 0.4);
   }
 }
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@utility animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 35s linear infinite;
+}
+
 

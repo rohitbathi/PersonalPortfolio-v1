@@ -60,23 +60,9 @@ const education: EduItem[] = [
   },
 ];
 
-function WorkCard({ item, index }: { item: WorkItem; index: number }) {
-  const ref = useRef<HTMLDivElement | null>(null);
-  const [active, setActive] = useState(index === 0);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => setActive(entry.isIntersecting),
-      { rootMargin: "-35% 0px -35% 0px", threshold: 0 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
+function WorkCard({ item, active }: { item: WorkItem; active: boolean }) {
   return (
-    <div ref={ref} className="relative pl-8">
+    <div className="relative pl-8">
       <span
         className={`absolute left-0 top-6 h-3 w-3 -translate-x-1/2 rounded-full border-2 transition-all duration-500 ${
           active
@@ -126,7 +112,59 @@ function WorkCard({ item, index }: { item: WorkItem; index: number }) {
   );
 }
 
-export function Timeline() {
+function EduCard({ item, active }: { item: EduItem; active: boolean }) {
+  return (
+    <div className="relative pl-8">
+      <span
+        className={`absolute left-0 top-6 h-3 w-3 -translate-x-1/2 rounded-full border-2 transition-all duration-500 ${
+          active
+            ? "border-success bg-success shadow-[0_0_12px_var(--success)]"
+            : "border-border bg-card"
+        }`}
+      />
+      <GlowCard
+        className={`bento-card p-6 transition-all duration-500 ${
+          active ? "border-success/30" : ""
+        }`}
+      >
+        <div className="flex flex-wrap items-baseline justify-between gap-2">
+          <div>
+            <div className="text-base font-semibold text-foreground">{item.school}</div>
+            <div className="text-sm text-muted-foreground">{item.degree}</div>
+          </div>
+          <div className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
+            {item.period}
+          </div>
+        </div>
+      </GlowCard>
+    </div>
+  );
+}
+
+export function Timeline({ scrollProgress = 1 }: { scrollProgress?: number }) {
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const checkSize = () => setIsDesktop(window.innerWidth >= 1024);
+    checkSize();
+    window.addEventListener("resize", checkSize);
+    return () => window.removeEventListener("resize", checkSize);
+  }, []);
+
+  // Compute active card index exclusively on desktop
+  const workActiveIndex = isDesktop
+    ? Math.min(work.length - 1, Math.floor(scrollProgress / (1 / work.length)))
+    : -1;
+
+  const eduActiveIndex = isDesktop
+    ? Math.min(education.length - 1, Math.floor(scrollProgress / (1 / education.length)))
+    : -1;
+
+  // Work column translates in steps to align the active card at the top
+  const translateY = isDesktop ? workActiveIndex * 110 : 0;
+  // Education column translates in steps
+  const eduTranslateY = isDesktop ? eduActiveIndex * 110 : 0;
+
   return (
     <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1.6fr_1fr]">
       {/* Work */}
@@ -134,12 +172,31 @@ export function Timeline() {
         <div className="mb-6 text-sm font-semibold uppercase tracking-widest text-muted-foreground">
           Work
         </div>
-        <div className="relative">
-          <div className="absolute left-0 top-2 bottom-2 w-px bg-border" />
-          <div className="space-y-5">
-            {work.map((w, i) => (
-              <WorkCard key={w.company} item={w} index={i} />
-            ))}
+        <div className="relative lg:h-[450px] lg:overflow-hidden">
+          <div
+            className="relative lg:transition-transform lg:duration-500 lg:ease-out"
+            style={{
+              transform: isDesktop ? `translateY(-${translateY}px)` : "none"
+            }}
+          >
+            {/* Timeline background track */}
+            <div className="absolute left-0 top-2 bottom-2 w-px bg-border" />
+            
+            {/* Timeline active progress bar */}
+            <div
+              className="absolute left-0 top-2 w-px bg-success shadow-[0_0_8px_var(--success)] transition-all duration-500"
+              style={{
+                height: `${scrollProgress * 100}%`,
+                maxHeight: "calc(100% - 16px)"
+              }}
+            />
+
+            <div className="space-y-5">
+              {work.map((w, i) => {
+                const active = isDesktop ? workActiveIndex === i : true;
+                return <WorkCard key={w.company} item={w} active={active} />;
+              })}
+            </div>
           </div>
         </div>
       </div>
@@ -149,25 +206,31 @@ export function Timeline() {
         <div className="mb-6 text-sm font-semibold uppercase tracking-widest text-muted-foreground">
           Education
         </div>
-        <div className="relative">
-          <div className="absolute left-0 top-2 bottom-2 w-px bg-border" />
-          <div className="space-y-5">
-            {education.map((e) => (
-              <div key={e.school} className="relative pl-8">
-                <span className="absolute left-0 top-6 h-3 w-3 -translate-x-1/2 rounded-full border-2 border-border bg-card" />
-                <GlowCard className="bento-card p-6">
-                  <div className="flex flex-wrap items-baseline justify-between gap-2">
-                    <div>
-                      <div className="text-base font-semibold text-foreground">{e.school}</div>
-                      <div className="text-sm text-muted-foreground">{e.degree}</div>
-                    </div>
-                    <div className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
-                      {e.period}
-                    </div>
-                  </div>
-                </GlowCard>
-              </div>
-            ))}
+        <div className="relative lg:h-[450px] lg:overflow-hidden">
+          <div
+            className="relative lg:transition-transform lg:duration-500 lg:ease-out"
+            style={{
+              transform: isDesktop ? `translateY(-${eduTranslateY}px)` : "none"
+            }}
+          >
+            {/* Timeline background track */}
+            <div className="absolute left-0 top-2 bottom-2 w-px bg-border" />
+            
+            {/* Timeline active progress bar */}
+            <div
+              className="absolute left-0 top-2 w-px bg-success shadow-[0_0_8px_var(--success)] transition-all duration-500"
+              style={{
+                height: `${scrollProgress * 100}%`,
+                maxHeight: "calc(100% - 16px)"
+              }}
+            />
+
+            <div className="space-y-5">
+              {education.map((e, i) => {
+                const active = isDesktop ? eduActiveIndex === i : true;
+                return <EduCard key={e.school} item={e} active={active} />;
+              })}
+            </div>
           </div>
         </div>
       </div>
