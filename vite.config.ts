@@ -1,38 +1,26 @@
-import { defineConfig, loadEnv } from "vite";
-import react from "@vitejs/plugin-react";
-import path from "path";
+// @lovable.dev/vite-tanstack-config already includes the following — do NOT add them manually
+// or the app will break with duplicate plugins:
+//   - tanstackStart, viteReact, tailwindcss, tsConfigPaths, nitro (build-only using cloudflare as a default target),
+//     componentTagger (dev-only), VITE_* env injection, @ path alias, React/TanStack dedupe,
+//     error logger plugins, and sandbox detection (port/host/strictPort).
+// You can pass additional config via defineConfig({ vite: { ... }, etc... }) if needed.
+import { defineConfig } from "vite";
+import { tanstackStart } from "@tanstack/react-start/plugin/vite";
+import { nitro } from "nitro/vite";
+import viteReact from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
+import tsConfigPaths from "vite-tsconfig-paths";
 
-// https://vitejs.dev/config/
-export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd(), "");
-  const localApiPort = process.env.LOCAL_API_PORT || env.LOCAL_API_PORT || "3001";
-
-  return {
-    server: {
-      host: "::",
-      port: 3000,
-      proxy: {
-        "/api": {
-          target: `http://127.0.0.1:${localApiPort}`,
-          changeOrigin: true,
-        },
-      },
-      allowedHosts: [
-        "localhost",
-        "127.0.0.1",
-        ".ngrok-free.app",
-        ".ngrok.io"
-      ],
-    },
-    plugins: [react()],
-    resolve: {
-      alias: {
-        "@": path.resolve(__dirname, "./src"),
-      },
-    },
-    build: {
-      target: "es2015",
-      minify: "esbuild"
-    }
-  };
+export default defineConfig({
+  plugins: [
+    tsConfigPaths({ projects: ["./tsconfig.json"] }),
+    tanstackStart({
+      server: { entry: "server" },
+    }),
+    nitro({
+      preset: "vercel",
+    }),
+    tailwindcss(),
+    viteReact(),
+  ],
 });

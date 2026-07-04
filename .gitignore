@@ -1,29 +1,37 @@
-# Dependencies
-node_modules/
-npm-debug.log*
-
-# Build outputs
-dist/
-build/
-*.tsbuildinfo
-
-# Environment variables
-.env
-
 # Logs
 logs
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# Dependency directories
-jspm_packages/
+node_modules
+dist
+dist-ssr
+.output
+.vinxi
+.tanstack/**
+.nitro
+*.local
 
-# Optional npm cache directory
-.npm
+# Wrangler / Cloudflare
+.wrangler/
+.dev.vars
 
-# Optional eslint cache
-.eslintcache
-
-# Next.js build output
-.next
-
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
 .DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Vercel
+.vercel
+
+AGENTS.md
