@@ -38,7 +38,7 @@ export function NavPill() {
       {
         rootMargin: "-30% 0px -50% 0px",
         threshold: [0, 0.1, 0.25, 0.5, 0.75, 1],
-      }
+      },
     );
 
     sections.forEach((s) => observer.observe(s));
@@ -80,7 +80,9 @@ export function NavPill() {
               aria-label={it.label}
               aria-current={isActive ? "true" : undefined}
               className={`group relative flex h-9 w-9 items-center justify-center rounded-full transition-all duration-300 hover:bg-accent ${
-                isActive ? "text-foreground scale-110" : "text-muted-foreground hover:text-foreground hover:scale-105"
+                isActive
+                  ? "text-foreground scale-110"
+                  : "text-muted-foreground hover:text-foreground hover:scale-105"
               }`}
             >
               <it.icon className="h-4 w-4 transition-transform" />
@@ -94,8 +96,7 @@ export function NavPill() {
             left: 0,
             transform: `translateX(${activeLine.left}px)`,
             opacity: activeLine.opacity,
-            transition:
-              "transform 500ms cubic-bezier(0.34, 1.3, 0.64, 1), opacity 300ms ease",
+            transition: "transform 500ms cubic-bezier(0.34, 1.3, 0.64, 1), opacity 300ms ease",
           }}
         />
       </div>

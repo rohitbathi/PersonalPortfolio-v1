@@ -10,7 +10,7 @@ interface GlowCardProps extends HTMLAttributes<HTMLDivElement> {
 
 export const GlowCard = forwardRef<HTMLDivElement, GlowCardProps>(function GlowCard(
   { className, children, onMouseMove, as = "div", ...props },
-  ref
+  ref,
 ) {
   const innerRef = useRef<HTMLDivElement | null>(null);
 

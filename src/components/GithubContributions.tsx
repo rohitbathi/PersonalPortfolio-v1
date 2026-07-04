@@ -72,7 +72,7 @@ export function GithubContributions({ username = "rohitbathi" }: { username?: st
   }
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full flex-col no-scrollbar">
       <div className="mb-4 flex items-center justify-between">
         <a
           href={`https://github.com/${username}`}
@@ -88,7 +88,7 @@ export function GithubContributions({ username = "rohitbathi" }: { username?: st
         </span>
       </div>
 
-      <div className="flex-1 overflow-x-auto pb-1" ref={scrollRef}>
+      <div className="flex-1 overflow-hidden no-scrollbar" ref={scrollRef}>
         <div className="flex gap-[3px] min-w-max">
           {weeks.map((week, i) => (
             <div key={i} className="flex flex-col gap-[3px]">
@@ -101,7 +101,7 @@ export function GithubContributions({ username = "rohitbathi" }: { username?: st
                   />
                 ) : (
                   <div key={j} className="h-[10px] w-[10px] rounded-[2px]" />
-                )
+                ),
               )}
             </div>
           ))}
@@ -109,9 +109,7 @@ export function GithubContributions({ username = "rohitbathi" }: { username?: st
       </div>
 
       {lastDate && (
-        <div className="mt-4 text-xs text-muted-foreground">
-          Last pushed on {lastDate}
-        </div>
+        <div className="mt-4 text-xs text-muted-foreground">Last pushed on {lastDate}</div>
       )}
     </div>
   );

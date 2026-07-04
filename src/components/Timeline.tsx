@@ -96,10 +96,7 @@ function WorkCard({ item, active }: { item: WorkItem; active: boolean }) {
           <div className="overflow-hidden">
             <ul className="space-y-2.5">
               {item.highlights.map((h, i) => (
-                <li
-                  key={i}
-                  className="flex gap-3 text-sm leading-relaxed text-muted-foreground"
-                >
+                <li key={i} className="flex gap-3 text-sm leading-relaxed text-muted-foreground">
                   <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-success" />
                   <span>{h}</span>
                 </li>
@@ -151,19 +148,21 @@ export function Timeline({ scrollProgress = 1 }: { scrollProgress?: number }) {
     return () => window.removeEventListener("resize", checkSize);
   }, []);
 
+  // Helper to compute active card index based on scrollProgress
+  // First 10% of scroll progress is kept inactive (all cards collapsed)
+  const getActiveIndex = (progress: number, totalItems: number) => {
+    const startThreshold = 0.1;
+    if (progress < startThreshold) return -1;
+
+    const activeProgress = progress - startThreshold;
+    const step = 0.9 / totalItems;
+    const index = Math.floor(activeProgress / step);
+    return Math.min(totalItems - 1, index);
+  };
+
   // Compute active card index exclusively on desktop
-  const workActiveIndex = isDesktop
-    ? Math.min(work.length - 1, Math.floor(scrollProgress / (1 / work.length)))
-    : -1;
-
-  const eduActiveIndex = isDesktop
-    ? Math.min(education.length - 1, Math.floor(scrollProgress / (1 / education.length)))
-    : -1;
-
-  // Work column translates in steps to align the active card at the top
-  const translateY = isDesktop ? workActiveIndex * 110 : 0;
-  // Education column translates in steps
-  const eduTranslateY = isDesktop ? eduActiveIndex * 110 : 0;
+  const workActiveIndex = isDesktop ? getActiveIndex(scrollProgress, work.length) : -1;
+  const eduActiveIndex = isDesktop ? getActiveIndex(scrollProgress, education.length) : -1;
 
   return (
     <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1.6fr_1fr]">
@@ -172,22 +171,17 @@ export function Timeline({ scrollProgress = 1 }: { scrollProgress?: number }) {
         <div className="mb-6 text-sm font-semibold uppercase tracking-widest text-muted-foreground">
           Work
         </div>
-        <div className="relative lg:h-[450px] lg:overflow-hidden">
-          <div
-            className="relative lg:transition-transform lg:duration-500 lg:ease-out"
-            style={{
-              transform: isDesktop ? `translateY(-${translateY}px)` : "none"
-            }}
-          >
+        <div className="relative">
+          <div className="relative">
             {/* Timeline background track */}
             <div className="absolute left-0 top-2 bottom-2 w-px bg-border" />
-            
+
             {/* Timeline active progress bar */}
             <div
               className="absolute left-0 top-2 w-px bg-success shadow-[0_0_8px_var(--success)] transition-all duration-500"
               style={{
                 height: `${scrollProgress * 100}%`,
-                maxHeight: "calc(100% - 16px)"
+                maxHeight: "calc(100% - 16px)",
               }}
             />
 
@@ -206,22 +200,17 @@ export function Timeline({ scrollProgress = 1 }: { scrollProgress?: number }) {
         <div className="mb-6 text-sm font-semibold uppercase tracking-widest text-muted-foreground">
           Education
         </div>
-        <div className="relative lg:h-[450px] lg:overflow-hidden">
-          <div
-            className="relative lg:transition-transform lg:duration-500 lg:ease-out"
-            style={{
-              transform: isDesktop ? `translateY(-${eduTranslateY}px)` : "none"
-            }}
-          >
+        <div className="relative">
+          <div className="relative">
             {/* Timeline background track */}
             <div className="absolute left-0 top-2 bottom-2 w-px bg-border" />
-            
+
             {/* Timeline active progress bar */}
             <div
               className="absolute left-0 top-2 w-px bg-success shadow-[0_0_8px_var(--success)] transition-all duration-500"
               style={{
                 height: `${scrollProgress * 100}%`,
-                maxHeight: "calc(100% - 16px)"
+                maxHeight: "calc(100% - 16px)",
               }}
             />
 

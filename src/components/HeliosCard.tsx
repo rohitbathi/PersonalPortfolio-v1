@@ -27,8 +27,8 @@ export function HeliosCard() {
         <div>
           <div className="text-lg font-semibold text-foreground">Helios by Atimuss</div>
           <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-            An intelligent recruiting platform — AI agents that source, screen, and
-            engage candidates at scale.
+            An intelligent recruiting platform — AI agents that source, screen, and engage
+            candidates at scale.
           </p>
         </div>
         <div className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border bg-secondary/40 transition-all group-hover:border-success/50 group-hover:bg-success/10">

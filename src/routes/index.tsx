@@ -45,20 +45,17 @@ function KeyCap({
         wide ? "px-5" : "w-20"
       }`}
     >
-      {Icon && <Icon className="h-6 w-6 transition-transform group-hover:scale-90" strokeWidth={1.5} />}
-      {wide && (
-        <span className="font-mono text-[13px] uppercase tracking-widest">{label}</span>
+      {Icon && (
+        <Icon className="h-6 w-6 transition-transform group-hover:scale-90" strokeWidth={1.5} />
       )}
+      {wide && <span className="font-mono text-[13px] uppercase tracking-widest">{label}</span>}
     </a>
   );
 }
 
 function Hero() {
   return (
-    <section
-      id="intro"
-      className="relative min-h-screen w-full overflow-hidden bg-hero-glow"
-    >
+    <section id="intro" className="relative min-h-screen w-full overflow-hidden bg-hero-glow">
       <div className="mx-auto flex min-h-screen max-w-5xl flex-col justify-center px-6 pt-32 pb-16">
         {/* <div className="mb-8 inline-flex w-fit items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1.5 backdrop-blur-xl">
           <span className="relative flex h-2 w-2">
@@ -75,13 +72,18 @@ function Hero() {
         </h1>
 
         <p className="mt-8 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-          I build and scale production AI systems — agentic workflows, voice AI with
-          sub-500ms speech-to-speech, and RAG architectures used by thousands.
+          I build and scale production AI systems — agentic workflows, voice AI with sub-500ms
+          speech-to-speech, and RAG architectures used by thousands.
         </p>
 
         <div className="mt-12 flex flex-wrap items-center gap-1.5">
           <KeyCap href="https://github.com/rohitbathi" icon={Github} label="Github" external />
-          <KeyCap href="https://linkedin.com/in/rohitbathi" icon={Linkedin} label="LinkedIn" external />
+          <KeyCap
+            href="https://linkedin.com/in/rohitbathi"
+            icon={Linkedin}
+            label="LinkedIn"
+            external
+          />
           <KeyCap href="/rohitbathi_resume.pdf" icon={FileText} label="Resume" external />
           <KeyCap href="mailto:bathirohit@gmail.com" icon={Mail} label="Email" />
           <KeyCap href="#bento" label="Explore more" wide />
@@ -105,9 +107,7 @@ function SectionHeading({
       <div className="mb-4">
         <SectionLabel>{label}</SectionLabel>
       </div>
-      <h2 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-        {title}
-      </h2>
+      <h2 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">{title}</h2>
       {description && (
         <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
           {description}
@@ -178,6 +178,8 @@ const projects = [
     description:
       "Local-first personal voice agent that lives entirely on device with AES encryption. Sub-500ms speech-to-speech, 159 WPM capture — 4x faster than typing.",
     tags: ["Voice AI", "On-device", "Desktop"],
+    href: "https://www.atimuss.com/",
+    image: "/atimuss-flow.png",
   },
   {
     year: "2024",
@@ -185,6 +187,8 @@ const projects = [
     description:
       "Job-search platform + Chrome extension scaled to 1,000+ users. Mock-interview engine with AI personas over LiveKit at sub-300ms latency.",
     tags: ["Next.js", "LiveKit", "Supabase"],
+    href: "https://applyloom.atimuss.com/",
+    image: "/applyloom.png",
   },
   {
     year: "2025",
@@ -192,6 +196,8 @@ const projects = [
     description:
       "Citation-grounded proposal drafting with a 3-stage retrieval + refinement pipeline. 96.2% claim traceability, 97.4% generation success rate.",
     tags: ["LangGraph", "Pinecone", "FastAPI"],
+    href: "https://cellanovatech-rfp.com/",
+    image: "/rfp.png",
   },
 ];
 
@@ -211,12 +217,20 @@ function Projects() {
         {projects.map((p) => (
           <GlowCard
             as="a"
-            href="#"
+            href={p.href}
+            target="_blank"
+            rel="noopener noreferrer"
             key={p.title}
             className="bento-card group flex flex-col p-6"
           >
-            <div className="mb-6 flex h-32 items-center justify-center rounded-xl border border-border bg-hero-glow">
-              <Zap className="h-8 w-8 text-foreground/60" />
+            <div className="relative mb-6 h-32 w-full overflow-hidden rounded-xl border border-border bg-hero-glow">
+              <iframe
+                src={p.href}
+                title={p.title}
+                scrolling="no"
+                className="absolute top-0 left-0 w-[400%] h-[400%] border-0 pointer-events-none origin-top-left scale-[0.25] opacity-85 transition-all duration-500 group-hover:scale-[0.26] group-hover:opacity-100"
+                loading="lazy"
+              />
             </div>
             <div className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
               {p.year}
@@ -262,7 +276,7 @@ function ExperienceSection() {
 
       const rect = container.getBoundingClientRect();
       const viewHeight = window.innerHeight;
-      
+
       // Pinning starts when parent rect.top reaches 96px (top-24)
       const startOffset = 96;
       const totalScrollableHeight = rect.height - (viewHeight - startOffset);
@@ -285,7 +299,7 @@ function ExperienceSection() {
 
   return (
     <section ref={containerRef} id="timeline" className="relative lg:h-[220vh] w-full">
-      <div className="lg:sticky lg:top-24 mx-auto max-w-6xl px-6 py-24 lg:py-8 lg:h-[calc(100vh-8rem)] flex flex-col justify-start lg:overflow-hidden">
+      <div className="lg:sticky lg:top-24 mx-auto max-w-6xl px-6 py-24 lg:py-8 lg:h-[calc(100vh-8rem)] flex flex-col justify-start lg:overflow-visible">
         <SectionHeading
           label="Experience"
           title={
@@ -295,7 +309,7 @@ function ExperienceSection() {
           }
           description="A Founding AI Engineer who's shipped 10+ enterprise-grade agents, taken a platform 0→1,000+ users, and obsesses over the details between demo and production."
         />
-        <div className="flex-1 w-full mt-4 lg:overflow-hidden">
+        <div className="flex-1 w-full mt-4 lg:overflow-visible">
           <Timeline scrollProgress={scrollProgress} />
         </div>
       </div>
@@ -305,10 +319,7 @@ function ExperienceSection() {
 
 function Contact() {
   return (
-    <section
-      id="contact"
-      className="relative mx-auto max-w-5xl overflow-hidden px-6 py-32"
-    >
+    <section id="contact" className="relative mx-auto max-w-5xl overflow-hidden px-6 py-32">
       <GlowCard className="bento-card relative overflow-hidden bg-hero-glow p-10 text-center sm:p-16">
         <div className="mx-auto max-w-2xl">
           <div className="mb-4 flex justify-center">
@@ -318,8 +329,8 @@ function Contact() {
             Let's build something <span className="text-muted-foreground">real.</span>
           </h2>
           <p className="mx-auto mt-4 max-w-lg text-sm leading-relaxed text-muted-foreground sm:text-base">
-            Have an AI product idea or an agentic workflow that needs to reach
-            production? I'd love to hear about it.
+            Have an AI product idea or an agentic workflow that needs to reach production? I'd love
+            to hear about it.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-1.5">
             <a

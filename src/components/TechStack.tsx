@@ -30,12 +30,10 @@ export function TechStack() {
           Tech stack
         </div>
 
-        <div className="text-lg font-semibold text-foreground">
-          Tech stacks I'm familiar with
-        </div>
+        <div className="text-lg font-semibold text-foreground">Tech stacks I'm familiar with</div>
         <p className="mt-1 text-sm leading-relaxed text-muted-foreground max-w-xl">
-          Primarily focused on the AI + full-stack ecosystem, but always eager to
-          explore and adopt what best solves the problem.
+          Primarily focused on the AI + full-stack ecosystem, but always eager to explore and adopt
+          what best solves the problem.
         </p>
       </div>
 
