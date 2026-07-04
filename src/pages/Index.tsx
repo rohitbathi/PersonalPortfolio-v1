@@ -1,14 +1,14 @@
-﻿import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Download, Github, Linkedin, Mail, MapPin, Mic, Moon, Phone, Send, Square, Sun, X } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Download, ExternalLink, Github, Linkedin, Mail, MapPin, Mic, Moon, Phone, Send, Square, Sun, X } from "lucide-react";
 import profileImage from "@/assets/profile-hero.jpg";
-/* Projects section (temporarily disabled)
+// Projects section (now enabled)
 import graphRagImage from "@/assets/graphRAG.png";
 import mobileQaImage from "@/assets/mobileQA.png";
 import ragVoiceImage from "@/assets/rag_voice_agent.png";
 import fineTuningImage from "@/assets/finetuning.jpg";
 import objectSegImage from "@/assets/ObjectSegmentation.jpg";
 import cryptoStreamImage from "@/assets/crypto_stream.png";
-*/
+import atimussFlowImage from "@/assets/atimussFlow.png";
 import { downloadResume } from "@/lib/resume";
 
 type Theme = "light" | "dark";
@@ -19,7 +19,7 @@ type ChatItem = {
   content: string;
 };
 
-/* Projects section (temporarily disabled)
+// Projects section (now enabled)
 type Project = {
   name: string;
   desc: string;
@@ -28,7 +28,6 @@ type Project = {
   githubLink: string;
   demoLink: string;
 };
-*/
 
 const SYSTEM_PROMPT = `You are Rohit Bathi's AI assistant.
 
@@ -62,7 +61,8 @@ Key facts:
 - ApplyLoom: Next.js at 1k+ active users, Chrome extension for job applications, multimodal coaching agents, intent-based model routing
 - Cypheryard: Twilio Media Streams and Amazon Transcribe voice agent; SQS and Lambda outbound automation
 - Specialized in Agentic Workflows (LangGraph/CrewAI), voice latency optimization, and RAG architecture
-- Projects shown on the site include GraphRAG, MobileQA, RAG Voice AI, fine-tuning work, object segmentation, and crypto streaming experiments
+- Projects shown on the site include Atimuss Flow, GraphRAG, MobileQA, RAG Voice AI, fine-tuning work, object segmentation, and crypto streaming experiments
+- Atimuss Flow: Local-first personal voice agent with AES encryption; sub-500ms speech-to-speech latency; system-level global hotkey STT at 159 WPM; end-to-end encrypted local processing.
 - Open to: Founding AI Engineer and founding-team AI infra roles
 - Location: Tempe, AZ; open to remote and relocation
 - Email: bathirohit@gmail.com
@@ -100,8 +100,15 @@ const experiences = [
   },
 ];
 
-/*
 const projects: Project[] = [
+  {
+    name: "Atimuss Flow",
+    desc: "Local-first personal voice agent with AES encryption for total privacy. Sub-500ms speech-to-speech latency with system-level STT and cursor-position injection.",
+    stack: ["Swift", "Python", "WebRTC", "AES"],
+    image: atimussFlowImage,
+    githubLink: "#",
+    demoLink: "#",
+  },
   {
     name: "GraphRAG Multi Agent",
     desc: "Knowledge Graph extraction from unstructured PDFs using multi-agent workflows for multi hop reasoning.",
@@ -151,7 +158,6 @@ const projects: Project[] = [
     demoLink: "https://drive.google.com/file/d/1bn_vYEWu2fOZ9z2U2BSRdlxKyTWM1hxi/view?usp=drive_link",
   },
 ];
-*/
 
 const techStack = [
   "LangChain",
@@ -242,7 +248,7 @@ const ABOUT_WORDS_TOP = ["build and", "ship and", "scale and"];
 const ABOUT_WORDS_BOTTOM = ["think", "execute", "improve"];
 const EXPERIENCE_WORDS_TOP = ["built", "scaled", "shipped"];
 const EXPERIENCE_WORDS_BOTTOM = ["that matter", "for users", "in production"];
-// const WORK_WORDS = ["built", "shipped", "deployed"]; // projects section
+const WORK_WORDS = ["built", "shipped", "deployed"]; // projects section
 const CONTACT_WORDS = ["something", "AI products", "great"];
 
 const useCyclingWord = (
@@ -370,7 +376,7 @@ const Index = () => {
   const aboutWordBottom = useCyclingWord(ABOUT_WORDS_BOTTOM);
   const experienceWordTop = useCyclingWord(EXPERIENCE_WORDS_TOP);
   const experienceWordBottom = useCyclingWord(EXPERIENCE_WORDS_BOTTOM);
-  // const workWord = useCyclingWord(WORK_WORDS); // projects section
+  const workWord = useCyclingWord(WORK_WORDS); // projects section
   const contactWord = useCyclingWord(CONTACT_WORDS);
 
   const chatHistory = useMemo(
@@ -1512,7 +1518,7 @@ const Index = () => {
         <ul className="nav-links">
           <li><a href="#about">About</a></li>
           <li><a href="#experience">Experience</a></li>
-          {/* <li><a href="#projects">Projects</a></li> */}
+          <li><a href="#projects">Projects</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
         <div className="nav-actions">
@@ -1540,19 +1546,23 @@ const Index = () => {
             <p className="hero-desc">
               Founding AI Engineer with 2+ years shipping agentic systems, hybrid RAG, and voice AI—from job platforms at 1k+ users to 10+ enterprise agents in healthcare and recruiting.
             </p>
-            <div className="avail-chip">Available for opportunities</div>
-            <div className="hero-actions">
-              <button className="btn-secondary" onClick={() => document.getElementById("experience")?.scrollIntoView({ behavior: "smooth" })}>
-                View my work
-              </button>
+            <div className="hero-status-row">
+              <a href="https://applyloom.atimuss.com/" target="_blank" rel="noopener noreferrer" className="avail-chip loom-chip">
+                <ExternalLink size={14} />
+                ApplyLoom
+              </a>
+              <a href="https://siri.atimuss.com/" target="_blank" rel="noopener noreferrer" className="avail-chip atimuss-chip">
+                <ExternalLink size={14} />
+                Atimuss Flow
+              </a>
               <button
-                className="btn-secondary btn-download"
+                className="avail-chip resume-chip"
                 type="button"
                 onClick={() => {
                   void downloadResume();
                 }}
               >
-                <Download size={15} className="download-icon-anim" />
+                <Download size={14} className="download-icon-anim" />
                 Download Resume
               </button>
             </div>
@@ -1718,9 +1728,9 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Projects section — re-enable with Project type, imports, projects[], WORK_WORDS, workWord, nav link
+      {/* Projects section */}
       <section id="projects">
-        <div className="section-eyebrow reveal">Work</div>
+        <div className="section-eyebrow reveal">Projects</div>
         <h2 className="section-title reveal">
           Things I&apos;ve <span className="dim tw-inline">{workWord}<span className="hero-tw-cursor" /></span>
         </h2>
@@ -1765,7 +1775,6 @@ const Index = () => {
           ))}
         </div>
       </section>
-      */}
 
       <section id="contact" style={{ minHeight: "auto" }}>
         <div className="section-eyebrow reveal">Contact</div>

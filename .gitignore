@@ -25,3 +25,5 @@ jspm_packages/
 
 # Next.js build output
 .next
+
+.DS_Store

@@ -1,4 +1,4 @@
-﻿Rohit Bathi - Portfolio AI context
+Rohit Bathi - Portfolio AI context
 
 Identity:
 - Name: Venkata Sai Rohit Bathi (goes by Rohit Bathi)
@@ -21,6 +21,7 @@ Experience highlights:
 - Cypheryard: production voice agent, outbound automation on SQS/Lambda
 
 Projects highlights (portfolio cards):
+- Atimuss Flow: Local-first personal voice agent with AES encryption, sub-500ms latency, system-level STT at 159 WPM
 - GraphRAG Multi Agent
 - MobileQA Multi Agent
 - RAG Voice AI

@@ -1657,24 +1657,73 @@ body.cursor-hover .v2 .cursor-ring {
 .v2 .avail-chip {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  padding: 6px 14px;
-  background: rgba(48, 209, 88, 0.1);
-  border: 1px solid rgba(48, 209, 88, 0.2);
+  gap: 10px;
+  font-size: 13.5px;
+  padding: 8px 18px;
+  background: rgba(var(--accent-channel) / 0.05);
+  border: 1px solid rgba(var(--accent-channel) / 0.15);
   border-radius: 980px;
-  color: var(--green);
-  margin-bottom: 28px;
+  color: var(--text2);
   font-weight: 500;
+  transition: all 0.25s;
+  cursor: pointer;
 }
 
 .v2 .avail-chip::before {
-  content: "";
-  width: 6px;
-  height: 6px;
-  background: var(--green);
-  border-radius: 50%;
-  animation: v2-pulse2 2s infinite;
+  display: none;
+}
+
+.v2 .hero-status-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: v2-fade-up 0.8s 0.9s forwards;
+}
+
+.v2 .loom-chip {
+  background: rgba(59, 130, 246, 0.08);
+  border-color: rgba(59, 130, 246, 0.2);
+  color: #3b82f6;
+}
+
+.v2 .loom-chip:hover {
+  background: rgba(59, 130, 246, 0.15);
+  border-color: rgba(59, 130, 246, 0.4);
+  color: #2563eb;
+  transform: translateY(-2px);
+}
+
+.v2 .atimuss-chip {
+  background: rgba(168, 85, 247, 0.08);
+  border-color: rgba(168, 85, 247, 0.2);
+  color: #a855f7;
+}
+
+.v2 .atimuss-chip:hover {
+  background: rgba(168, 85, 247, 0.15);
+  border-color: rgba(168, 85, 247, 0.4);
+  color: #9333ea;
+  transform: translateY(-2px);
+}
+
+.v2 .resume-chip {
+  background: var(--accent);
+  border-color: transparent;
+  color: white;
+}
+
+.v2 .resume-chip:hover {
+  background: var(--accent-bright);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgb(var(--accent-channel) / 0.25);
+}
+
+.v2 .resume-chip::before {
+  display: none;
 }
 
 .v2 .big-num {
